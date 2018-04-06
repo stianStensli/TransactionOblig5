@@ -53,6 +53,7 @@ public class UserService {
         dao.save(user);
     }
 
+    //TODO: fix
     public void updateUser(User user) {
         User entity = dao.findById(user.getId()).get();
         if (entity != null) {
@@ -66,11 +67,10 @@ public class UserService {
         }
     }
 
-    //public void deleteUserBySSO(String sso) {     dao.deleteBySSO(sso); }
-
     public void deleteUserById(Integer Id) {
         dao.deleteById(Id);
     }
+
     public Iterable<User> findAllUsers() {
         return dao.findAll();
     }

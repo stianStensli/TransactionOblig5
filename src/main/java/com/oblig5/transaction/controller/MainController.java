@@ -64,7 +64,7 @@ public class MainController {
             String result = String.format("%.3f", btcValue);
             model.addAttribute("BTC", result);
         }else{
-            model.addAttribute("BTC", "NA");
+            model.addAttribute("BTC", "N/A");
         }
         return "FrontPage";
     }
