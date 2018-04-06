@@ -9,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.security.Principal;
+
 @Controller
 public class MainController {
     @Autowired
@@ -16,7 +18,7 @@ public class MainController {
     public static boolean init = true;
 
     @RequestMapping("/")
-    public String welcome(){
+    public String welcome(Principal prin){
         if(init) {
             User admin = new User();
             admin.setEmail("admin");
@@ -28,6 +30,12 @@ public class MainController {
             init = false;
         }
 
+        if(prin != null){
+            User user = userService.findByEmail(prin.getName());
+            if(user != null){
+                return "redirect:/FrontPage";
+            }
+        }
 
         return "home";
     }
@@ -37,26 +45,22 @@ public class MainController {
         return "hello";
     }
 
+    @RequestMapping("/FrontPage")
+    public String home(Principal prin, Model model){
+        User user = userService.findByEmail(prin.getName());
+        if(user == null){
+            return "redirect:/";
+        }
+
+        model.addAttribute("name",user.getFirstName() + " " + user.getLastName());
+        return "FrontPage";
+    }
+
     @RequestMapping("/login")
     public String login(){
         return "login";
     }
-    @RequestMapping("/completeUser")
-    public String finnishBuilding(Model model, String email, String firstName, String lastName, String psw, String pswrepeats){
-        //id=3&email=gs&firstName=gs&lastName=admin&password=123
-        if(userService.isEmailNotUnique(email)){
 
-            return "redirect:/";
-        }
-        User user = new User();
-        user.setLastName(lastName);
-        user.setFirstName(firstName);
-        user.setEmail(email);
-        user.setPassword(psw);
 
-        userService.saveUser(user);
-
-        return "redirect:/hello";
-    }
 
 }

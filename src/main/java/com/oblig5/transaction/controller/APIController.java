@@ -30,5 +30,13 @@ public class APIController {
 
         return dto;
     }
+    //https://blockchain.info/ticker
+    @RequestMapping(path = "/api/bitCoinValue", produces= MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    Integer index(){
+
+        return userService.findAllUsersDto();
+    }
+
 
 }

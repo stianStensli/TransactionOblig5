@@ -30,6 +30,15 @@ public class UserService {
         return dao.findById(id).get();
     }
 
+    public User findByEmail(String email) {
+        for(User usr : findAllUsers()){
+            if(usr.getEmail().equals(email)){
+                return usr;
+            }
+        }
+        return null;
+    }
+
     public void saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         dao.save(user);

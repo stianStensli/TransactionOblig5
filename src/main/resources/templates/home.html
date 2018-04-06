@@ -48,7 +48,6 @@
 </div>
 
 <script>
-    // Get the modal
     var modelReg = document.getElementById('id01');
 
     // When the user clicks anywhere outside close it
@@ -82,7 +81,7 @@
                     document.getElementById('errorLabel').innerHTML = "Email already in Use.";
 
                 }else{
-                    window.location.href = "./hello";
+                    window.location.href = "./FrontPage";
                 }
             }
         });
@@ -92,6 +91,6 @@
 
 </script>
 
-<p>Already a user <a th:href="@{/hello}">login</a> </p>
+<p>Already a user <a th:href="@{/FrontPage}">login</a> </p>
 </body>
 </html>
