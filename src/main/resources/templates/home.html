@@ -3,6 +3,7 @@
 <head>
     <title>Transaction</title>
     <link rel="stylesheet" th:href="@{/css/mainStyle.css}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
 <h1>Welcome!</h1>
@@ -14,34 +15,36 @@
 
 <div id="id01" class="modelReg">
     <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Model">&times;</span>
-    <form class="modelReg-content" action=".">
+    <div class="modelReg-content">
         <div class="container">
             <h1>Sign Up</h1>
             <p>Please fill in this form to create an account.</p>
             <hr>
-            <label for="email"><b>Email</b></label>
-            <input type="text" placeholder="Enter Email" name="email" required>
+            <p class="error" id="errorLabel"></p>
 
-            <label for="firstName"><b>First Name</b></label>
-            <input type="text" placeholder="Enter First Name" name="firstName" required>
+            <label ><b>Email</b></label>
+            <input type="text" placeholder="Enter Email" name="email" id="emailF" required>
 
-            <label for="lastName"><b>Last Name</b></label>
-            <input type="text" placeholder="Enter Last Name" name="lastName" required>
+            <label ><b>First Name</b></label>
+            <input type="text" placeholder="Enter First Name" name="firstName" id="fnameF" required>
 
-            <label for="psw"><b>Password</b></label>
-            <input type="password" placeholder="Enter Password" name="psw" required>
+            <label ><b>Last Name</b></label>
+            <input type="text" placeholder="Enter Last Name" name="lastName" id="lnameF" required>
 
-            <label for="psw-repeat"><b>Repeat Password</b></label>
-            <input type="password" placeholder="Repeat Password" name="psw-repeat" required>
+            <label><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="psw" id="pswF" required>
+
+            <label><b>Repeat Password</b></label>
+            <input type="password" placeholder="Repeat Password" name="pswrepeat" id="pswReF" required>
 
             <p>By creating an account you agree to our Terms & Privacy.(Not yet created)</p>
 
             <div class="clearfix">
                 <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
-                <button type="submit" class="signupbtn">Sign Up</button>
+                <button type="submit" onclick="signUp()" class="signupbtn">Sign Up</button>
             </div>
         </div>
-    </form>
+    </div>
 </div>
 
 <script>
@@ -50,10 +53,43 @@
 
     // When the user clicks anywhere outside close it
     window.onclick = function(event) {
-        if (event.target == modal) {
+        if (event.target == modelReg) {
             modelReg.style.display = "none";
         }
-    }
+    };
+
+    function signUp() {
+        var email = document.getElementById('emailF').value;
+        var fname = document.getElementById('fnameF').value;
+        var lname = document.getElementById('lnameF').value;
+        var psw = document.getElementById('pswF').value;
+        var pswRe = document.getElementById('pswReF').value;
+        var json = { "id":"", "email" : email, "firstName" : fname, "lastName": lname, "password": psw};
+
+        if(!(psw == pswRe)){
+            document.getElementById('errorLabel').innerHTML = "Password does not match.";
+            return;
+        }
+        var jqxhr = $.ajax({
+            url: '/api/users/add',
+            type: 'POST',
+            data: JSON.stringify(json),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            async: false,
+            success: function(msg) {
+                if(msg.id == null){
+                    document.getElementById('errorLabel').innerHTML = "Email already in Use.";
+
+                }else{
+                    window.location.href = "./hello";
+                }
+            }
+        });
+
+        event.preventDefault();
+    };
+
 </script>
 
 <p>Already a user <a th:href="@{/hello}">login</a> </p>
