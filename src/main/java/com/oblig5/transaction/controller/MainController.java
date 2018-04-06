@@ -2,6 +2,7 @@ package com.oblig5.transaction.controller;
 
 import com.oblig5.transaction.dto.UserDto;
 import com.oblig5.transaction.model.User;
+import com.oblig5.transaction.model.Wallet;
 import com.oblig5.transaction.service.TransactionService;
 import com.oblig5.transaction.service.UserService;
 import javassist.bytecode.stackmap.BasicBlock;
@@ -22,11 +23,17 @@ public class MainController {
     @RequestMapping("/")
     public String welcome(Principal prin){
         if(init) {
+            Wallet wallet = new Wallet();
+
+            wallet.setBtc(1000.0);
+            wallet.setUsd(10000.0);
+
             User admin = new User();
             admin.setEmail("admin");
             admin.setPassword("123");
             admin.setFirstName("admin");
             admin.setLastName("admin");
+            admin.setWallet(wallet);
 
             userService.saveUser(admin);
             init = false;
@@ -62,7 +69,6 @@ public class MainController {
             model.addAttribute("BTC", result);
         }else{
             model.addAttribute("BTC", "NA");
-
         }
         return "FrontPage";
     }
@@ -71,11 +77,5 @@ public class MainController {
     public String login(){
         return "login";
     }
-
-    public static void main(){
-        String result = String.format("%.3f", "blha blah");
-        System.out.println(result);
-    }
-
 
 }

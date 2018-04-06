@@ -29,6 +29,9 @@ public class User {
     @Column(name = "LAST_NAME", nullable = false)
     private String lastName;
 
+    @NonNull
+    @OneToOne(cascade = CascadeType.ALL)
+    private Wallet wallet;
 
 
     public Integer getId() {
@@ -71,10 +74,12 @@ public class User {
         this.email = email;
     }
 
-    @Override
-    public String toString() {
-        return "User [id=" + id
-                + ", firstName=" + firstName + ", lastName=" + lastName
-                + ", email=" + email + "]";
+    public Wallet getWallet() {
+        return wallet;
     }
+
+    public void setWallet(Wallet wallet) {
+        this.wallet = wallet;
+    }
+
 }
