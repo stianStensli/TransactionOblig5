@@ -4,6 +4,7 @@ package com.oblig5.transaction.model;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "APP_USER")
@@ -32,7 +33,6 @@ public class User {
     @NonNull
     @OneToOne(cascade = CascadeType.ALL)
     private Wallet wallet;
-
 
     public Integer getId() {
         return id;
@@ -81,5 +81,7 @@ public class User {
     public void setWallet(Wallet wallet) {
         this.wallet = wallet;
     }
+
+
 
 }
