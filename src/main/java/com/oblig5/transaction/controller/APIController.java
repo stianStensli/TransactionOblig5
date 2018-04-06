@@ -2,10 +2,18 @@ package com.oblig5.transaction.controller;
 
 import com.oblig5.transaction.dto.UserDto;
 import com.oblig5.transaction.model.User;
+import com.oblig5.transaction.service.TransactionService;
 import com.oblig5.transaction.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 
 @RestController
 public class APIController {
@@ -30,12 +38,11 @@ public class APIController {
 
         return dto;
     }
-    //https://blockchain.info/ticker
-    @RequestMapping(path = "/api/bitCoinValue", produces= MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody
-    Integer index(){
 
-        return userService.findAllUsersDto();
+    @RequestMapping(path = "/api/bitCoinValue")
+    public @ResponseBody
+    Double btcValue(){
+        return TransactionService.getBitCoinValue();
     }
 
 

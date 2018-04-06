@@ -6,8 +6,8 @@
     <link rel="stylesheet" th:href="@{/css/mainStyle.css}">
 </head>
 <body>
-<h1>Hello World</h1>
 <p  th:text="${name}">Name</p>
+<h2>Current Global Value BTC/USD: <span th:text="*{BTC}">NA</span></h2>
 <form th:action="@{/logout}" method="post">
     <input type="submit" value="Sign Out"/>
 </form>

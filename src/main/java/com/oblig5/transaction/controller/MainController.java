@@ -2,7 +2,9 @@ package com.oblig5.transaction.controller;
 
 import com.oblig5.transaction.dto.UserDto;
 import com.oblig5.transaction.model.User;
+import com.oblig5.transaction.service.TransactionService;
 import com.oblig5.transaction.service.UserService;
+import javassist.bytecode.stackmap.BasicBlock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,6 +55,15 @@ public class MainController {
         }
 
         model.addAttribute("name",user.getFirstName() + " " + user.getLastName());
+
+        Double btcValue = TransactionService.getBitCoinValue();
+        if(btcValue != null){
+            String result = String.format("%.3f", btcValue);
+            model.addAttribute("BTC", result);
+        }else{
+            model.addAttribute("BTC", "NA");
+
+        }
         return "FrontPage";
     }
 
@@ -61,6 +72,10 @@ public class MainController {
         return "login";
     }
 
+    public static void main(){
+        String result = String.format("%.3f", "blha blah");
+        System.out.println(result);
+    }
 
 
 }
