@@ -2,16 +2,21 @@ package com.oblig5.transaction.service;
 
 import com.oblig5.transaction.dao.BuyBtcDao;
 import com.oblig5.transaction.dao.SellBtcDao;
+import com.oblig5.transaction.dto.TransactionDto;
+import com.oblig5.transaction.dto.UserDto;
 import com.oblig5.transaction.model.BuyBtc;
 import com.oblig5.transaction.model.SellBtc;
 import com.oblig5.transaction.model.User;
 import com.oblig5.transaction.model.Wallet;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.LinkedList;
 
+@Service
 public class TransactionService {
     @Autowired
     private SellBtcDao sellDao;
@@ -53,11 +58,18 @@ public class TransactionService {
         return buyDao.findById(id).get();
     }
 
+    //TODO: Remove bitcoins from wallet
     public void saveSell(SellBtc sell) {
+        if(!sellDao.findById(sell.getId()).isPresent()){
+            //sell.getUser().getWallet().setBtc();
+
+        }
         sellDao.save(sell);
     }
-    public void saveBuy(SellBtc buy) {
-        sellDao.save(buy);
+
+    //TODO: Remove USD from wallet
+    public void saveBuy(BuyBtc buy) {
+        buyDao.save(buy);
     }
 
     public Iterable<SellBtc> findAllSell() {
@@ -75,4 +87,18 @@ public class TransactionService {
     }
 
 
+    public Iterable<TransactionDto> findAllSellDto() {
+        LinkedList<TransactionDto> list = new LinkedList<>();
+        for(SellBtc sell :  sellDao.findAll()){
+            list.add(new TransactionDto(sell));
+        }
+        return list;
+    }
+    public Iterable<TransactionDto> findAllBuyDto() {
+        LinkedList<TransactionDto> list = new LinkedList<>();
+        for(BuyBtc sell :  buyDao.findAll()){
+            list.add(new TransactionDto(sell));
+        }
+        return list;
+    }
 }
