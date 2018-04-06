@@ -23,17 +23,11 @@ public class MainController {
     @RequestMapping("/")
     public String welcome(Principal prin){
         if(init) {
-            Wallet wallet = new Wallet();
-
-            wallet.setBtc(1000.0);
-            wallet.setUsd(10000.0);
-
             User admin = new User();
             admin.setEmail("admin");
             admin.setPassword("123");
             admin.setFirstName("admin");
             admin.setLastName("admin");
-            admin.setWallet(wallet);
 
             userService.saveUser(admin);
             init = false;
@@ -62,6 +56,8 @@ public class MainController {
         }
 
         model.addAttribute("name",user.getFirstName() + " " + user.getLastName());
+        model.addAttribute("wallet",user.getWallet());
+
 
         Double btcValue = TransactionService.getBitCoinValue();
         if(btcValue != null){

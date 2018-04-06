@@ -28,6 +28,7 @@ button {
     width: 100%;
     opacity: 0.9;
 }
+
 .submitBtn {
     background-color: #4CAF50;
     color: white;
@@ -38,6 +39,59 @@ button {
     width: 100%;
     opacity: 0.9;
     font-size: 1.2em;
+}
+
+.transactionBtn {
+    background-color: #f2f5f2;
+    color: black;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 38%;
+    opacity: 1;
+    font-size: 1.2em;
+}
+
+.transactionBox {
+    width: 32%;
+    float: left;
+}
+
+#orderBook {
+    float: left;
+    width: 32%;
+    padding-left: 1%;
+}
+
+#orderBook table {
+    width:100%;
+
+}
+
+#userInfoContainer {
+    width: 100%;
+    text-align: center;
+}
+
+#userInfo {
+    margin-bottom: 1em;
+}
+
+.table-scroll {
+    padding-bottom: 0.5em;
+    text-align: center;
+    height: 30%;
+    overflow: auto;
+}
+
+#sellTable {
+    background:#0080004d;
+    color:black;
+}
+#buyTable {
+    background:#ff0000b3;
+    color:black;
 }
 
 button:hover {
