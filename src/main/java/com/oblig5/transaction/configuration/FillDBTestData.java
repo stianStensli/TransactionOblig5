@@ -3,7 +3,6 @@ package com.oblig5.transaction.configuration;
 import com.oblig5.transaction.model.*;
 import com.oblig5.transaction.service.TransactionService;
 import com.oblig5.transaction.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class FillDBTestData {
 
