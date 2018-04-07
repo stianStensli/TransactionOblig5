@@ -2,6 +2,7 @@ package com.oblig5.transaction.service;
 
 import com.oblig5.transaction.dao.BuyBtcDao;
 import com.oblig5.transaction.dao.SellBtcDao;
+import com.oblig5.transaction.dto.SortByPrice;
 import com.oblig5.transaction.dto.TransactionDto;
 import com.oblig5.transaction.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 @Service
@@ -106,13 +109,34 @@ public class TransactionService {
         for(SellBtc sell :  sellDao.findAll()){
             list.add(new TransactionDto(sell));
         }
-        return list;
+        return sortTransactions(list,8);
     }
     public Iterable<TransactionDto> findAllBuyDto() {
         LinkedList<TransactionDto> list = new LinkedList<>();
         for(BuyBtc sell :  buyDao.findAll()){
             list.add(new TransactionDto(sell));
         }
-        return list;
+        return sortTransactions(list,8);
+    }
+
+    private Iterable<TransactionDto> sortTransactions(LinkedList<TransactionDto> list, int topPriceNr){
+        LinkedList<TransactionDto> sortedList = new LinkedList<>();
+
+        TransactionDto[] arr = new TransactionDto[list.size()];
+        arr = list.toArray(arr);
+
+        Arrays.sort(arr, new SortByPrice());
+        //TODO:Merg
+
+        for(int i=0; i < arr.length; i++){
+            if(i==topPriceNr){
+                break;
+            }
+            DecimalFormat format = new DecimalFormat("##.000");
+            arr[i].setPrice(Double.parseDouble(format.format(arr[i].getPrice())));
+            arr[i].setAmount(Double.parseDouble(format.format(arr[i].getAmount())));
+            sortedList.add(arr[i]);
+        }
+        return sortedList;
     }
 }

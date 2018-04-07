@@ -29,6 +29,7 @@ public class APIController {
     Iterable<TransactionDto> sell(){
         return transactionService.findAllSellDto();
     }
+
     @RequestMapping(path = "/api/transaction/buys", produces= MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     Iterable<TransactionDto> buy(){
