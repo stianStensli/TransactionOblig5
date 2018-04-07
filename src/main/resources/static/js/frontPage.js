@@ -25,7 +25,7 @@ function refresh() {
             $.each(data, function(index, element) {
                 var sum = element.price*element.amount;
                 sum = Math.round(sum * 1000) / 1000;
-                addToTable(sell_table,element.price,element.amount,sum);
+                addToTable(new_tbody_sell,element.price,element.amount,sum);
             });
         }
     });
@@ -38,7 +38,7 @@ function refresh() {
             $.each(data, function(index, element) {
                 var sum = element.price*element.amount;
                 sum = Math.round(sum * 1000) / 1000;
-                addToTable(buy_table,element.price,element.amount,sum);
+                addToTable(new_tbody_buy,element.price,element.amount,sum);
             });
         }
     });
