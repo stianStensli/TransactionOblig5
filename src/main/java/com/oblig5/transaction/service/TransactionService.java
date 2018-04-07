@@ -3,11 +3,7 @@ package com.oblig5.transaction.service;
 import com.oblig5.transaction.dao.BuyBtcDao;
 import com.oblig5.transaction.dao.SellBtcDao;
 import com.oblig5.transaction.dto.TransactionDto;
-import com.oblig5.transaction.dto.UserDto;
-import com.oblig5.transaction.model.BuyBtc;
-import com.oblig5.transaction.model.SellBtc;
-import com.oblig5.transaction.model.User;
-import com.oblig5.transaction.model.Wallet;
+import com.oblig5.transaction.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +18,9 @@ public class TransactionService {
     private SellBtcDao sellDao;
     @Autowired
     private BuyBtcDao buyDao;
+    @Autowired
+    private UserService userService;
+
 
     public static Double getBitCoinValue(){
         try {
@@ -58,17 +57,32 @@ public class TransactionService {
         return buyDao.findById(id).get();
     }
 
-    //TODO: Remove bitcoins from wallet
-    public void saveSell(SellBtc sell) {
-        if(!sellDao.findById(sell.getId()).isPresent()){
-            //sell.getUser().getWallet().setBtc();
-
+    public void saveSell(SellBtc sell) throws InsufficientFundsException {
+        if(sell.getId() == null){
+            User seller = sell.getUser();
+            if(seller.getWallet().transferBtc(-sell.getAmount())==null){
+                throw new InsufficientFundsException("Wallet does not have a sufficient amount of USD to complete transaction.");
+            }
+            userService.saveUser(seller);
+        }else{
+            //TODO: Make transaction
         }
+
         sellDao.save(sell);
     }
 
-    //TODO: Remove USD from wallet
-    public void saveBuy(BuyBtc buy) {
+    public void saveBuy(BuyBtc buy) throws InsufficientFundsException{
+        if(buy.getId() == null){
+            User seller = buy.getUser();
+            if(seller.getWallet().transferUsd(-buy.getPrice()) == null){
+                throw new InsufficientFundsException("Wallet does not have a sufficient amount of BTC to complete transaction.");
+            }
+            userService.saveUser(seller);
+    }else{
+        //TODO: Make transaction
+    }
+
+
         buyDao.save(buy);
     }
 

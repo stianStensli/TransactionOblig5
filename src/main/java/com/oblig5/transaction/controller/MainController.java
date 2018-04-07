@@ -1,5 +1,6 @@
 package com.oblig5.transaction.controller;
 
+import com.oblig5.transaction.configuration.FillDBTestData;
 import com.oblig5.transaction.dto.UserDto;
 import com.oblig5.transaction.model.User;
 import com.oblig5.transaction.model.Wallet;
@@ -18,18 +19,15 @@ import java.security.Principal;
 public class MainController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private TransactionService transactionService;
     public static boolean init = true;
 
     @RequestMapping("/")
     public String welcome(Principal prin){
         if(init) {
-            User admin = new User();
-            admin.setEmail("admin");
-            admin.setPassword("123");
-            admin.setFirstName("admin");
-            admin.setLastName("admin");
+             FillDBTestData.fillDB(userService,transactionService);
 
-            userService.saveUser(admin);
             init = false;
         }
 

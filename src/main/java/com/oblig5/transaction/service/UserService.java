@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 @Service("userService")
 @Transactional
@@ -41,29 +42,28 @@ public class UserService {
     }
 
     public void saveUser(User user) {
-        if(user.getWallet() == null){
-            Wallet wallet = new Wallet();
+        if(user.getId() == null){
+            if(user.getWallet() == null){
+                Wallet wallet = new Wallet();
 
-            wallet.setBtc(1000.0);
-            wallet.setUsd(10000.0);
-            user.setWallet(wallet);
-        }
-
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        dao.save(user);
-    }
-
-    //TODO: fix
-    public void updateUser(User user) {
-        User entity = dao.findById(user.getId()).get();
-        if (entity != null) {
-            if (!user.getPassword().equals(entity.getPassword())) {
-                entity.setPassword(passwordEncoder.encode(user.getPassword()));
-                entity.setPassword(user.getPassword());
+                wallet.setBtc(1000.0);
+                wallet.setUsd(10000.0);
+                user.setWallet(wallet);
             }
-            entity.setFirstName(user.getFirstName());
-            entity.setLastName(user.getLastName());
-            entity.setEmail(user.getEmail());
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            dao.save(user);
+        }else{
+            Optional<User> temp = dao.findById(user.getId());
+            if(temp.isPresent()){
+                if(!user.getPassword().equals(temp.get().getPassword())){
+                    user.setPassword(passwordEncoder.encode(user.getPassword()));
+                }
+                dao.save(user);
+
+            }else{
+                //TODO: handle Error
+            }
+
         }
     }
 

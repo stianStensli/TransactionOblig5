@@ -43,4 +43,20 @@ public class Wallet {
     public void setUsd(Double usd) {
         this.usd = usd;
     }
+
+    public Double transferBtc(Double amount){
+        if(btc + amount < 0){
+            return null;
+        }
+        btc += amount;
+        return btc;
+    }
+    public Double transferUsd(Double amount){
+        if (usd + amount < 0) {
+            return null;
+        }
+
+        usd += amount;
+        return usd;
+    }
 }
