@@ -36,15 +36,6 @@ public class APIController {
         return transactionService.findAllBuy(Currency.BTC,8);
     }
 
-
-    //Only for testing: should be removed
-    @RequestMapping(path = "/api/usersReal", produces= MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody
-    Iterable<User> indexReal(){
-        return userService.findAllUsers();
-    }
-
-
     @RequestMapping(value = "/api/users/add" , method = RequestMethod.POST)
     public @ResponseBody
     UserDto save(@RequestBody User jsonString) {
