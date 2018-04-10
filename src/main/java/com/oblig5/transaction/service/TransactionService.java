@@ -60,30 +60,38 @@ public class TransactionService {
             for(Transaction buy :  transactionDao.findAll()){
                 if(buy.getCurrencyTo().equals(transaction.getCurrencyFrom())){
 
-                    if(buy.getOfferPrice().equals(transaction.getOfferPrice())){
-
-                        buy.doTransactino(transaction);
-                        if(buy.getAmountFrom()==0){
-                            transactionDao.delete(buy);
-                        }else{
-                            transactionDao.save(buy);
-                        }
-
-                        if(transaction.getAmountFrom()==0){
+                    //TODO: clean up.  buy.getOfferPrice().equals(1/... will not work in most cases...
+                    if((buy.isInvert() ^ transaction.isInvert()) && buy.getOfferPrice().equals(transaction.getOfferPrice())){
+                        makeTransaction(buy,transaction);
+                        if(transaction.getAmountFrom().equals(0)){
                             break;
                         }
+                    }if(!(buy.isInvert() ^ transaction.isInvert()) && buy.getOfferPrice().equals(1/transaction.getOfferPrice()) ){
+                        makeTransaction(buy,transaction);
+                        if(transaction.getAmountFrom().equals(0)){
+                            break;
+                        }
+
                     }
-
                 }
+
+
             }
-
-
         }
 
         userService.saveUser(user);
         if(transaction.getAmountFrom() != 0 || transaction.getAmountTo() != 0) {
             transactionDao.save(transaction);
         }
+    }
+    private void makeTransaction(Transaction buy, Transaction transaction){
+        buy.doTransaction(transaction);
+        if(buy.getAmountFrom()==0){
+            transactionDao.delete(buy);
+        }else{
+            transactionDao.save(buy);
+        }
+
     }
 
     public Iterable<Transaction> findAll() {

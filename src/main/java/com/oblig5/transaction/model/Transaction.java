@@ -120,7 +120,7 @@ public class Transaction {
         isInvert = invert;
     }
 
-    public void doTransactino(Transaction transaction){
+    public void doTransaction(Transaction transaction){
         if(currencyFrom.equals(transaction.currencyTo) && currencyTo.equals(transaction.currencyFrom)){
             try {
                 if(amountFrom <= transaction.amountTo){
