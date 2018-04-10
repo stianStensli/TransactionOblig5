@@ -133,7 +133,6 @@ public class TransactionService {
         arr = list.toArray(arr);
         Arrays.sort(arr, new SortByPrice());
 
-
         TransactionDto temp = arr[0];
 
         for(int i=1; i < arr.length; i++){
