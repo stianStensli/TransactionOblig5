@@ -40,10 +40,10 @@ public class TransactionController {
         try {
             transactionService.save(buy);
         } catch (InsufficientFundsException e) {
-            redirectAttrs.addAttribute("Error","buy");
+            redirectAttrs.addAttribute("error","buy");
         }
 
-        return "redirect:/";
+        return "redirect:/FrontPage";
     }
 
     @RequestMapping("sellBTC")
@@ -65,8 +65,8 @@ public class TransactionController {
         try {
             transactionService.save(sell);
         } catch (InsufficientFundsException e) {
-            redirectAttrs.addAttribute("Error","sell");
+            redirectAttrs.addAttribute("error","sell");
         }
-        return "redirect:/";
+        return "redirect:/FrontPage";
     }
 }

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.LinkedList;
 
@@ -54,6 +53,7 @@ public class TransactionService {
 
     public void save(Transaction transaction)throws InsufficientFundsException{
         User user = transaction.getUser();
+
         if(transaction.getId() == null){
             user.getWallet().transfer(-transaction.getAmountFrom(),transaction.getCurrencyFrom());
 
@@ -68,6 +68,7 @@ public class TransactionService {
                         }else{
                             transactionDao.save(buy);
                         }
+
                         if(transaction.getAmountFrom()==0){
                             break;
                         }
@@ -77,9 +78,6 @@ public class TransactionService {
             }
 
 
-
-        }else{
-            //TODO: Make transaction
         }
 
         userService.saveUser(user);

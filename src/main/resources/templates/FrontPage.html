@@ -27,10 +27,10 @@
         <form action="/transaction/sellBTC">
 
         <label ><b>Price:</b></label>
-        <input type="number" placeholder="Price per BTC" name="price" id="priceBuy" required>
+        <input type="number" placeholder="Price per BTC" name="price" id="priceBuy"  step="0.001" required>
 
         <label ><b>Amount:</b></label>
-        <input type="number" placeholder="Amount of BTC" name="amount" id="amountBuy" required>
+        <input type="number" placeholder="Amount of BTC" name="amount" id="amountBuy"  step="0.001" required>
 
         <button type="submit" class="transactionBtn">Sell</button>
         </form>
@@ -44,10 +44,10 @@
         <hr>
         <form action="/transaction/buyBTC">
             <label ><b>Price:</b></label>
-            <input type="number" placeholder="Price per BTC" name="price" id="priceSell" required>
+            <input type="number" placeholder="Price per BTC" name="price" id="priceSell" step="0.001" required>
 
             <label ><b>Amount:</b></label>
-            <input type="number" placeholder="Amount of BTC" name="amount" id="amountSell" required>
+            <input type="number" placeholder="Amount of BTC" name="amount" id="amountSell" step="0.001" required>
 
             <button type="submit" class="transactionBtn">Buy</button>
         </form>
@@ -83,6 +83,8 @@
     </div>
         <input type="submit" id="refresh" onclick="refresh()" value="refresh"/>
 </div>
-
+<div class="errorMsg" >
+<p th:text="${error}"></p>
+</div>
 </body>
 </html>

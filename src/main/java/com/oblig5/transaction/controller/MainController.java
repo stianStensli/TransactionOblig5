@@ -12,8 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
+import java.util.Optional;
 
 @Controller
 public class MainController {
@@ -47,7 +49,7 @@ public class MainController {
     }
 
     @RequestMapping("/FrontPage")
-    public String home(Principal prin, Model model){
+    public String home(Principal prin, Model model,@RequestParam(value = "error") Optional<String> error){
         User user = userService.findByEmail(prin.getName());
         if(user == null){
             return "redirect:/";
@@ -64,6 +66,14 @@ public class MainController {
         }else{
             model.addAttribute("BTC", "N/A");
         }
+        if(error.isPresent()){
+            if(error.get().equals("buy")){
+                model.addAttribute("error","Insufficient funds to offer to buy.");
+            }else if(error.get().equals("sell")){
+                model.addAttribute("error","Insufficient funds to make sell.");
+            }
+        }
+
         return "FrontPage";
     }
 
