@@ -29,14 +29,14 @@ public class FillDBTestData {
 
         userService.saveUser(admin);
         admin = userService.findByEmail("admin");
-
+/*
         for(int i = 0; i<30;i++){
             if(Math.random() > 0.5 ){
                 makeSell(admin, transactionService);
             }else{
                 makeBuy(admin, transactionService);
             }
-        }
+        }*/
 
 
     }

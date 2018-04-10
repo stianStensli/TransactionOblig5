@@ -53,16 +53,39 @@ public class TransactionService {
     }
 
     public void save(Transaction transaction)throws InsufficientFundsException{
+        User user = transaction.getUser();
         if(transaction.getId() == null){
-            User user = transaction.getUser();
             user.getWallet().transfer(-transaction.getAmountFrom(),transaction.getCurrencyFrom());
 
-            userService.saveUser(user);
+            for(Transaction buy :  transactionDao.findAll()){
+                if(buy.getCurrencyTo().equals(transaction.getCurrencyFrom())){
+
+                    if(buy.getOfferPrice().equals(transaction.getOfferPrice())){
+
+                        buy.doTransactino(transaction);
+                        if(buy.getAmountFrom()==0){
+                            transactionDao.delete(buy);
+                        }else{
+                            transactionDao.save(buy);
+                        }
+                        if(transaction.getAmountFrom()==0){
+                            break;
+                        }
+                    }
+
+                }
+            }
+
+
+
         }else{
             //TODO: Make transaction
         }
 
-        transactionDao.save(transaction);
+        userService.saveUser(user);
+        if(transaction.getAmountFrom() != 0 || transaction.getAmountTo() != 0) {
+            transactionDao.save(transaction);
+        }
     }
 
     public Iterable<Transaction> findAll() {

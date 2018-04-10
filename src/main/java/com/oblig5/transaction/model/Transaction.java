@@ -55,32 +55,6 @@ public class Transaction {
     @ManyToOne
     private User user;
 
-    public void doTransactino(Transaction transaction){
-        if(currencyFrom.equals(transaction.currencyTo) && currencyTo.equals(transaction.currencyFrom)){
-            try {
-                if(amountFrom <= transaction.amountTo){
-                    user.getWallet().transfer(amountTo, currencyTo);
-                    transaction.getUser().getWallet().transfer(amountFrom, currencyFrom);
-                    transaction.amountTo -= amountFrom;
-                    transaction.amountFrom -= amountTo;
-
-                    amountTo = 0.0;
-                    amountFrom = 0.0;
-                }else{
-                    user.getWallet().transfer(transaction.amountFrom, currencyTo);
-                    transaction.getUser().getWallet().transfer(transaction.amountTo, currencyFrom);
-                    amountTo -= transaction.amountFrom;
-                    amountFrom -= transaction.amountTo;
-
-                    transaction.amountTo = 0.0;
-                    transaction.amountFrom = 0.0;
-
-                }
-            } catch (InsufficientFundsException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
     public Integer getId() {
         return id;
@@ -146,4 +120,30 @@ public class Transaction {
         isInvert = invert;
     }
 
+    public void doTransactino(Transaction transaction){
+        if(currencyFrom.equals(transaction.currencyTo) && currencyTo.equals(transaction.currencyFrom)){
+            try {
+                if(amountFrom <= transaction.amountTo){
+                    user.getWallet().transfer(amountTo, currencyTo);
+                    transaction.getUser().getWallet().transfer(amountFrom, currencyFrom);
+                    transaction.amountTo -= amountFrom;
+                    transaction.amountFrom -= amountTo;
+
+                    amountTo = 0.0;
+                    amountFrom = 0.0;
+                }else{
+                    user.getWallet().transfer(transaction.amountFrom, currencyTo);
+                    transaction.getUser().getWallet().transfer(transaction.amountTo, currencyFrom);
+                    amountTo -= transaction.amountFrom;
+                    amountFrom -= transaction.amountTo;
+
+                    transaction.amountTo = 0.0;
+                    transaction.amountFrom = 0.0;
+
+                }
+            } catch (InsufficientFundsException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
