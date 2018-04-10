@@ -125,19 +125,33 @@ public class TransactionService {
 
     private Iterable<TransactionDto> sortTransactions(LinkedList<TransactionDto> list, int topPriceNr){
         LinkedList<TransactionDto> sortedList = new LinkedList<>();
-
         TransactionDto[] arr = new TransactionDto[list.size()];
+        if(arr.length == 0){
+            return sortedList;
+        }
+
         arr = list.toArray(arr);
-
         Arrays.sort(arr, new SortByPrice());
-        //TODO:Merg
 
-        for(int i=0; i < arr.length; i++){
-            if(i==topPriceNr){
+
+        TransactionDto temp = arr[0];
+
+        for(int i=1; i < arr.length; i++){
+            if(sortedList.size() == topPriceNr){
                 break;
             }
-            sortedList.add(arr[i]);
+
+            if(temp.getOfferPrice().equals(arr[i].getOfferPrice())){
+                temp.setAmount(temp.getAmount() + arr[i].getAmount());
+            }else{
+                sortedList.add(temp);
+                temp = arr[i];
+            }
         }
+        if(sortedList.size() < topPriceNr){
+            sortedList.add(temp);
+        }
+
         return sortedList;
     }
 }
