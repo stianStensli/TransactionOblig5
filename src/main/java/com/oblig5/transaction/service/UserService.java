@@ -3,6 +3,7 @@ package com.oblig5.transaction.service;
 
 import com.oblig5.transaction.dao.UserDao;
 import com.oblig5.transaction.dto.UserDto;
+import com.oblig5.transaction.model.Currency;
 import com.oblig5.transaction.model.User;
 import com.oblig5.transaction.model.Wallet;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service("userService")
 @Transactional
@@ -46,8 +44,11 @@ public class UserService {
             if(user.getWallet() == null){
                 Wallet wallet = new Wallet();
 
-                wallet.setBtc(1000.0);
-                wallet.setUsd(10000.0);
+                Map founds = new HashMap();
+                founds.put(Currency.USD,1000.0);
+                founds.put(Currency.BTC,100.0);
+                wallet.setFounds(founds);
+
                 user.setWallet(wallet);
             }
             user.setPassword(passwordEncoder.encode(user.getPassword()));

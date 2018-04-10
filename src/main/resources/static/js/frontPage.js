@@ -23,9 +23,9 @@ function refresh() {
         async: false,
         success: function(data) {
             $.each(data, function(index, element) {
-                var sum = element.price*element.amount;
+                var sum = element.offerPrice*element.amount;
                 sum = Math.round(sum * 1000) / 1000;
-                addToTable(new_tbody_sell,element.price,element.amount,sum);
+                addToTable(new_tbody_sell,element.offerPrice,element.amount,sum);
             });
         }
     });
@@ -36,9 +36,9 @@ function refresh() {
         async: false,
         success: function(data) {
             $.each(data, function(index, element) {
-                var sum = element.price*element.amount;
+                var sum = element.offerPrice*element.amount;
                 sum = Math.round(sum * 1000) / 1000;
-                addToTable(new_tbody_buy,element.price,element.amount,sum);
+                addToTable(new_tbody_buy,element.offerPrice,element.amount,sum);
             });
         }
     });

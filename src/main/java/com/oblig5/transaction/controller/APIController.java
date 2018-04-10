@@ -2,8 +2,8 @@ package com.oblig5.transaction.controller;
 
 import com.oblig5.transaction.dto.TransactionDto;
 import com.oblig5.transaction.dto.UserDto;
-import com.oblig5.transaction.model.BuyBtc;
-import com.oblig5.transaction.model.SellBtc;
+import com.oblig5.transaction.model.Currency;
+import com.oblig5.transaction.model.Transaction;
 import com.oblig5.transaction.model.User;
 import com.oblig5.transaction.service.TransactionService;
 import com.oblig5.transaction.service.UserService;
@@ -27,13 +27,13 @@ public class APIController {
     @RequestMapping(path = "/api/transaction/sells", produces= MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     Iterable<TransactionDto> sell(){
-        return transactionService.findAllSellDto();
+        return transactionService.findAllSell(Currency.BTC,8);
     }
 
     @RequestMapping(path = "/api/transaction/buys", produces= MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     Iterable<TransactionDto> buy(){
-        return transactionService.findAllBuyDto();
+        return transactionService.findAllBuy(Currency.BTC,8);
     }
 
 

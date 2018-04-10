@@ -4,14 +4,20 @@ import com.oblig5.transaction.model.*;
 import com.oblig5.transaction.service.TransactionService;
 import com.oblig5.transaction.service.UserService;
 
+import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
+
 public class FillDBTestData {
 
     public static void fillDB(UserService userService,TransactionService transactionService){
 
         Wallet wallet = new Wallet();
 
-        wallet.setBtc(1000000.0);
-        wallet.setUsd(10000000.0);
+        Map founds = new HashMap();
+        founds.put(Currency.USD,1000000.0);
+        founds.put(Currency.BTC,100000.0);
+        wallet.setFounds(founds);
 
         User admin = new User();
         admin.setEmail("admin");
@@ -42,15 +48,28 @@ public class FillDBTestData {
         }
         Double rngSeed = Math.random();
 
-        SellBtc sell = new SellBtc();
+        Transaction sell = new Transaction();
+        DecimalFormat numberFormat = new DecimalFormat("#.000");
 
-        sell.setAmount(5*rngSeed);
         Double diff = 10 * (0.5 - rngSeed);
-        sell.setPrice(btcValue + diff);
+
+        Double newValue = btcValue + diff;
+        newValue = Double.parseDouble(numberFormat.format(newValue));
+        double sellAmount = (10*rngSeed);
+        sellAmount = Double.parseDouble(numberFormat.format(sellAmount));
+        Double newAmount = Double.parseDouble(numberFormat.format(6102.324 * sellAmount));
+
+        sell.setCurrencyFrom(Currency.BTC);
+        sell.setCurrencyTo(Currency.USD);
+        sell.setOfferPrice(newValue);
+        sell.setInvert(true);
+
+        sell.setAmountFrom(sellAmount);
+        sell.setAmountTo(newAmount);
         sell.setUser(user);
 
         try {
-            transactionService.saveSell(sell);
+            transactionService.save(sell);
         } catch (InsufficientFundsException e) { }
 
     }
@@ -62,15 +81,25 @@ public class FillDBTestData {
         }
         Double rngSeed = Math.random();
 
-        BuyBtc buy = new BuyBtc();
+        Transaction sell = new Transaction();
+        DecimalFormat numberFormat = new DecimalFormat("#.000");
 
-        buy.setAmount(5*rngSeed);
         Double diff = 10 * (0.5 - rngSeed);
-        buy.setPrice(btcValue + diff);
-        buy.setUser(user);
+
+        Double offer = (btcValue + diff);
+        offer = Double.parseDouble(numberFormat.format(offer));
+
+        Double newAmount = Double.parseDouble(numberFormat.format(rngSeed*10));
+
+        sell.setCurrencyFrom(Currency.USD);
+        sell.setCurrencyTo(Currency.BTC);
+        sell.setOfferPrice(offer);
+        sell.setAmountFrom(offer*newAmount);
+        sell.setAmountTo(newAmount);
+        sell.setUser(user);
 
         try {
-            transactionService.saveBuy(buy);
+            transactionService.save(sell);
         } catch (InsufficientFundsException e) { }
     }
 

@@ -1,9 +1,8 @@
 package com.oblig5.transaction.service;
 
-import com.oblig5.transaction.dao.BuyBtcDao;
-import com.oblig5.transaction.dao.SellBtcDao;
-import com.oblig5.transaction.dto.SortByPrice;
+import com.oblig5.transaction.dao.TransactionDao;
 import com.oblig5.transaction.dto.TransactionDto;
+import com.oblig5.transaction.model.SortByPrice;
 import com.oblig5.transaction.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,12 +17,9 @@ import java.util.LinkedList;
 @Service
 public class TransactionService {
     @Autowired
-    private SellBtcDao sellDao;
-    @Autowired
-    private BuyBtcDao buyDao;
+    private TransactionDao transactionDao;
     @Autowired
     private UserService userService;
-
 
     public static Double getBitCoinValue(){
         try {
@@ -52,71 +48,58 @@ public class TransactionService {
         }
     }
 
-    public SellBtc findSellById(Integer id) {
-        return sellDao.findById(id).get();
+    public Transaction findById(Integer id){
+        return transactionDao.findById(id).get();
     }
 
-    public BuyBtc findBuyById(Integer id) {
-        return buyDao.findById(id).get();
-    }
+    public void save(Transaction transaction)throws InsufficientFundsException{
+        if(transaction.getId() == null){
+            User user = transaction.getUser();
+            user.getWallet().transfer(-transaction.getAmountFrom(),transaction.getCurrencyFrom());
 
-    public void saveSell(SellBtc sell) throws InsufficientFundsException {
-        if(sell.getId() == null){
-            User seller = sell.getUser();
-            if(seller.getWallet().transferBtc(-sell.getAmount())==null){
-                throw new InsufficientFundsException("Wallet does not have a sufficient amount of USD to complete transaction.");
-            }
-            userService.saveUser(seller);
+            userService.saveUser(user);
         }else{
             //TODO: Make transaction
         }
 
-        sellDao.save(sell);
+        transactionDao.save(transaction);
     }
 
-    public void saveBuy(BuyBtc buy) throws InsufficientFundsException{
-        if(buy.getId() == null){
-            User seller = buy.getUser();
-            if(seller.getWallet().transferUsd(-buy.getPrice()) == null){
-                throw new InsufficientFundsException("Wallet does not have a sufficient amount of BTC to complete transaction.");
+    public Iterable<Transaction> findAll() {
+        return transactionDao.findAll();
+    }
+
+    public void deleteById(Integer Id) {
+        transactionDao.deleteById(Id);
+    }
+
+    public Iterable<TransactionDto> findAllSell(Currency currency) {
+        return findAllSell(currency, -1);
+    }
+
+    public Iterable<TransactionDto> findAllSell(Currency currency,  int numberOfTransactions) {
+        LinkedList<TransactionDto> list = new LinkedList<>();
+        for(Transaction sell :  transactionDao.findAll()){
+            if(sell.getCurrencyFrom() == currency){
+                list.add(new TransactionDto(sell,true));
             }
-            userService.saveUser(seller);
-    }else{
-        //TODO: Make transaction
-    }
-
-
-        buyDao.save(buy);
-    }
-
-    public Iterable<SellBtc> findAllSell() {
-        return sellDao.findAll();
-    }
-    public Iterable<BuyBtc> findAllBuy() {
-        return buyDao.findAll();
-    }
-
-    public void deleteSellById(Integer Id) {
-        sellDao.deleteById(Id);
-    }
-    public void deleteBuyById(Integer Id) {
-        buyDao.deleteById(Id);
-    }
-
-
-    public Iterable<TransactionDto> findAllSellDto() {
-        LinkedList<TransactionDto> list = new LinkedList<>();
-        for(SellBtc sell :  sellDao.findAll()){
-            list.add(new TransactionDto(sell));
         }
-        return sortTransactions(list,8);
+        return sortTransactions(list, numberOfTransactions);
     }
-    public Iterable<TransactionDto> findAllBuyDto() {
+
+    public Iterable<TransactionDto> findAllBuy(Currency currency) {
+        return findAllBuy(currency, -1);
+
+    }
+
+    public Iterable<TransactionDto> findAllBuy(Currency currency,  int numberOfTransactions) {
         LinkedList<TransactionDto> list = new LinkedList<>();
-        for(BuyBtc sell :  buyDao.findAll()){
-            list.add(new TransactionDto(sell));
+        for(Transaction buy :  transactionDao.findAll()){
+            if(buy.getCurrencyTo() == currency){
+                list.add(new TransactionDto(buy, false));
+            }
         }
-        return sortTransactions(list,8);
+        return sortTransactions(list, numberOfTransactions);
     }
 
     private Iterable<TransactionDto> sortTransactions(LinkedList<TransactionDto> list, int topPriceNr){
@@ -132,9 +115,6 @@ public class TransactionService {
             if(i==topPriceNr){
                 break;
             }
-            DecimalFormat format = new DecimalFormat("##.000");
-            arr[i].setPrice(Double.parseDouble(format.format(arr[i].getPrice())));
-            arr[i].setAmount(Double.parseDouble(format.format(arr[i].getAmount())));
             sortedList.add(arr[i]);
         }
         return sortedList;

@@ -1,8 +1,9 @@
 package com.oblig5.transaction.controller;
 
-import com.oblig5.transaction.model.BuyBtc;
+
+import com.oblig5.transaction.model.Currency;
 import com.oblig5.transaction.model.InsufficientFundsException;
-import com.oblig5.transaction.model.SellBtc;
+import com.oblig5.transaction.model.Transaction;
 import com.oblig5.transaction.model.User;
 import com.oblig5.transaction.service.TransactionService;
 import com.oblig5.transaction.service.UserService;
@@ -24,9 +25,12 @@ public class TransactionController {
 
     @RequestMapping("buyBTC")
     public String buy(Principal principal, Double price, Double amount, RedirectAttributes redirectAttrs){
-        BuyBtc buy = new BuyBtc();
-        buy.setAmount(amount);
-        buy.setPrice(price);
+        Transaction buy = new Transaction();
+        buy.setAmountFrom(amount*price);
+        buy.setAmountTo(amount);
+        buy.setOfferPrice(price);
+        buy.setCurrencyTo(Currency.BTC);
+        buy.setCurrencyFrom(Currency.USD);
 
         if(principal == null)
             return "redirect:/";
@@ -34,7 +38,7 @@ public class TransactionController {
         buy.setUser(usr);
 
         try {
-            transactionService.saveBuy(buy);
+            transactionService.save(buy);
         } catch (InsufficientFundsException e) {
             redirectAttrs.addAttribute("Error","buy");
         }
@@ -44,9 +48,14 @@ public class TransactionController {
 
     @RequestMapping("sellBTC")
     public String sell(Principal principal, Double price, Double amount, RedirectAttributes redirectAttrs){
-        SellBtc sell = new SellBtc();
-        sell.setAmount(amount);
-        sell.setPrice(price);
+        Transaction sell = new Transaction();
+        sell.setAmountFrom(amount);
+        sell.setInvert(true);
+        sell.setAmountTo(amount*price);
+        sell.setOfferPrice(price);
+        sell.setCurrencyTo(Currency.USD);
+        sell.setCurrencyFrom(Currency.BTC);
+
 
         if(principal == null)
             return "redirect:/";
@@ -54,7 +63,7 @@ public class TransactionController {
         sell.setUser(usr);
 
         try {
-            transactionService.saveSell(sell);
+            transactionService.save(sell);
         } catch (InsufficientFundsException e) {
             redirectAttrs.addAttribute("Error","sell");
         }

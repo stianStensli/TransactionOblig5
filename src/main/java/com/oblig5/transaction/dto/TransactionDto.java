@@ -1,44 +1,38 @@
 package com.oblig5.transaction.dto;
 
-import com.oblig5.transaction.model.BuyBtc;
-import com.oblig5.transaction.model.SellBtc;
+
+import com.oblig5.transaction.model.Currency;
+import com.oblig5.transaction.model.Transaction;
 
 public class TransactionDto {
-    private Integer id;
 
-    private Double price;
+    private Double offerPrice;
 
     private Double amount;
 
-    public TransactionDto(){}
+    private boolean isInvert = false;
 
-    public TransactionDto(SellBtc sell){
-        this.id = sell.getId();
-        this.price = sell.getPrice();
-        this.amount = sell.getAmount();
+    public TransactionDto(){
+
     }
-    public TransactionDto(BuyBtc buyBtc){
-        this.id = buyBtc.getId();
-        this.price = buyBtc.getPrice();
-        this.amount = buyBtc.getAmount();
+    public TransactionDto(Transaction transaction, boolean from){
+        offerPrice = transaction.getOfferPrice();
+        if(from)
+        amount = transaction.getAmountFrom();
+        else{
+            amount = transaction.getAmountTo();
+        }
+        isInvert = transaction.isInvert();
+
     }
-
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+    public Double getOfferPrice() {
+        return offerPrice;
     }
 
-    public Double getPrice() {
-        return price;
+    public void setOfferPrice(Double price) {
+        this.offerPrice = price;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
-    }
 
     public Double getAmount() {
         return amount;
@@ -46,5 +40,13 @@ public class TransactionDto {
 
     public void setAmount(Double amount) {
         this.amount = amount;
+    }
+
+    public boolean isInvert() {
+        return isInvert;
+    }
+
+    public void setInvert(boolean invert) {
+        isInvert = invert;
     }
 }

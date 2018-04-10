@@ -3,6 +3,9 @@ package com.oblig5.transaction.model;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.StringJoiner;
 
 @Entity
 @Table(name = "APP_WALLET")
@@ -12,13 +15,12 @@ public class Wallet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NonNull
-    @Column(name = "BTC", nullable = false)
-    private Double btc;
+    @ElementCollection(fetch=FetchType.EAGER)
+    @CollectionTable(name = "WALLET", joinColumns = @JoinColumn(name = "WALLET_id"))
+    @MapKeyColumn(name="mapKey")
+    @Column(name = "mapValue")
+    private Map<Currency, Double> founds;
 
-    @NonNull
-    @Column(name = "USD", nullable = false)
-    private Double usd;
 
     public Integer getId() {
         return id;
@@ -28,35 +30,34 @@ public class Wallet {
         this.id = id;
     }
 
-    public Double getBtc() {
-        return btc;
+    public Map<Currency, Double> getFounds() {
+        return founds;
     }
 
-    public void setBtc(Double btc) {
-        this.btc = btc;
+    public void setFounds(Map<Currency, Double> founds) {
+        this.founds = founds;
     }
 
-    public Double getUsd() {
-        return usd;
-    }
-
-    public void setUsd(Double usd) {
-        this.usd = usd;
-    }
-
-    public Double transferBtc(Double amount){
-        if(btc + amount < 0){
-            return null;
-        }
-        btc += amount;
-        return btc;
-    }
-    public Double transferUsd(Double amount){
-        if (usd + amount < 0) {
-            return null;
+    public Double transfer(Double amount, Currency currency) throws InsufficientFundsException {
+        founds.putIfAbsent(currency,0.0);
+        Double current = founds.get(currency);
+        Double newValue = current + amount;
+        if(newValue < 0){
+            throw new InsufficientFundsException("Insufficient amount of "+currency.toString());
         }
 
-        usd += amount;
-        return usd;
+        founds.replace(currency,newValue);
+        return newValue;
+    }
+
+    @Override
+    public String toString() {
+        StringJoiner build = new StringJoiner(", ","","");
+        for (Map.Entry<Currency, Double> entry : founds.entrySet())
+        {
+            build.add(entry.getKey() + ": " + entry.getValue());
+        }
+        return build.toString();
     }
 }
+

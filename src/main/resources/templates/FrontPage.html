@@ -12,7 +12,7 @@
     <div id="userInfo">
         <b>Hello <span th:text="*{name}">NA</span>.</b>
         <p>Your Wallet:</p>
-        <p>USD: <span th:text="*{wallet.getUsd()}">NA</span>, BTC: <span th:text="*{wallet.getBtc()}">NA</span></p>
+        <p><span th:text="*{wallet}">NA</span></span></p>
         <form th:action="@{/logout}" method="post">
             <input type="submit" id="logoutBtn" value="Sign Out"/>
         </form>
