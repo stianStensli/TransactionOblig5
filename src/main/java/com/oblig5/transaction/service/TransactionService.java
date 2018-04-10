@@ -86,7 +86,7 @@ public class TransactionService {
     }
     private void makeTransaction(Transaction buy, Transaction transaction){
         buy.doTransaction(transaction);
-        if(buy.getAmountFrom()==0){
+        if(buy.getAmountFrom().equals(0) || buy.getAmountTo().equals(0)){
             transactionDao.delete(buy);
         }else{
             transactionDao.save(buy);
