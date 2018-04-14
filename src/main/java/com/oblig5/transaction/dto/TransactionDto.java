@@ -15,6 +15,7 @@ public class TransactionDto {
     public TransactionDto(){
 
     }
+
     public TransactionDto(Transaction transaction, boolean from){
         offerPrice = transaction.getOfferPrice();
         if(from)

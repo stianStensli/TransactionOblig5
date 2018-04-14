@@ -25,6 +25,7 @@ public class TransactionController {
     private TransactionService transactionService;
 
 
+    @Transactional
     @RequestMapping("buyBTC")
     public String buy(Principal principal, Double price, Double amount, RedirectAttributes redirectAttrs){
         Transaction buy = new Transaction();
@@ -48,6 +49,7 @@ public class TransactionController {
         return "redirect:/FrontPage";
     }
 
+    @Transactional
     @RequestMapping("sellBTC")
     public String sell(Principal principal, Double price, Double amount, RedirectAttributes redirectAttrs){
         Transaction sell = new Transaction();
