@@ -43,11 +43,6 @@ public class MainController {
         return "home";
     }
 
-    @RequestMapping("/hello")
-    public String hello(){
-        return "hello";
-    }
-
     @RequestMapping("/FrontPage")
     public String home(Principal prin, Model model,@RequestParam(value = "error") Optional<String> error){
         User user = userService.findByEmail(prin.getName());
