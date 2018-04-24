@@ -6,12 +6,15 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
+<div id="welcome" >
 <h1>Welcome!</h1>
 
 
 <h3>Not a User? Sign Up</h3>
 
 <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Sign Up</button>
+    <p>Already a user <a th:href="@{/FrontPage}">login</a> </p>
+</div>
 
 <div id="id01" class="modelReg">
     <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Model">&times;</span>
@@ -91,6 +94,5 @@
 
 </script>
 
-<p>Already a user <a th:href="@{/FrontPage}">login</a> </p>
 </body>
 </html>
