@@ -2,7 +2,6 @@ package com.oblig5.transaction.service;
 
 import com.oblig5.transaction.dao.TransactionDao;
 import com.oblig5.transaction.dto.TransactionDto;
-import com.oblig5.transaction.model.SortByPrice;
 import com.oblig5.transaction.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -84,6 +83,7 @@ public class TransactionService {
             transactionDao.save(transaction);
         }
     }
+
     private void makeTransaction(Transaction buy, Transaction transaction){
         buy.doTransaction(transaction);
         if(buy.getAmountFrom().equals(0.0) || buy.getAmountTo().equals(0.0)){

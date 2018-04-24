@@ -1,16 +1,12 @@
 package com.oblig5.transaction.controller;
 
 import com.oblig5.transaction.configuration.FillDBTestData;
-import com.oblig5.transaction.dto.UserDto;
 import com.oblig5.transaction.model.User;
-import com.oblig5.transaction.model.Wallet;
 import com.oblig5.transaction.service.TransactionService;
 import com.oblig5.transaction.service.UserService;
-import javassist.bytecode.stackmap.BasicBlock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 

@@ -4,7 +4,6 @@ package com.oblig5.transaction.model;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "APP_USER")

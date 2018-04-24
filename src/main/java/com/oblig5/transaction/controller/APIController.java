@@ -3,7 +3,6 @@ package com.oblig5.transaction.controller;
 import com.oblig5.transaction.dto.TransactionDto;
 import com.oblig5.transaction.dto.UserDto;
 import com.oblig5.transaction.model.Currency;
-import com.oblig5.transaction.model.Transaction;
 import com.oblig5.transaction.model.User;
 import com.oblig5.transaction.service.TransactionService;
 import com.oblig5.transaction.service.UserService;

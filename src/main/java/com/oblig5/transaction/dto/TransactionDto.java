@@ -1,7 +1,6 @@
 package com.oblig5.transaction.dto;
 
 
-import com.oblig5.transaction.model.Currency;
 import com.oblig5.transaction.model.Transaction;
 
 public class TransactionDto {
