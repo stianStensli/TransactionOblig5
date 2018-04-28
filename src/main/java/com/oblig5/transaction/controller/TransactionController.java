@@ -15,6 +15,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 
+/***
+ * Handles requests for web pages under /transaction
+ * Does necessary steps to register new transaction from the view.
+ *
+ */
 @Controller
 @RequestMapping("/transaction/")
 public class TransactionController {

@@ -8,6 +8,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+/***
+ * Connects the security layer with model User object.
+ * Makes it so that Users saved in the database can log in with their stored email and password.
+ *
+ */
 @Service("userDetailsService")
 public class UserDetailsServiceSecure implements UserDetailsService  {
 

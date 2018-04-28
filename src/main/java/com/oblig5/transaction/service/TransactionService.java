@@ -12,6 +12,9 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.LinkedList;
 
+/***
+ * Handles all tasks related to Transactions.
+ */
 @Service
 public class TransactionService {
     @Autowired

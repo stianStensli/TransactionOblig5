@@ -1,6 +1,6 @@
 package com.oblig5.transaction.controller;
 
-import com.oblig5.transaction.configuration.FillDBTestData;
+
 import com.oblig5.transaction.model.User;
 import com.oblig5.transaction.service.TransactionService;
 import com.oblig5.transaction.service.UserService;
@@ -13,6 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.security.Principal;
 import java.util.Optional;
 
+/***
+ * Handles requests for most web pages.
+ * May only retrieve a html page, or retrieve data to the view.
+ * Not including pages under /transaction
+ */
 @Controller
 public class MainController {
     @Autowired
@@ -23,11 +28,6 @@ public class MainController {
 
     @RequestMapping("/")
     public String welcome(Principal prin){
-        if(init) {
-             FillDBTestData.fillDB(userService,transactionService);
-
-            init = false;
-        }
 
         if(prin != null){
             User user = userService.findByEmail(prin.getName());

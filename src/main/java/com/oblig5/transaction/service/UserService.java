@@ -16,6 +16,9 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Optional;
 
+/***
+ * Handles all tasks related to User.
+ */
 @Service("userService")
 @Transactional
 public class UserService {
@@ -45,7 +48,7 @@ public class UserService {
                 Wallet wallet = new Wallet();
 
                 Map founds = new HashMap();
-                founds.put(Currency.USD,1000.0);
+                founds.put(Currency.USD,100.0);
                 founds.put(Currency.BTC,100.0);
                 wallet.setFounds(founds);
 

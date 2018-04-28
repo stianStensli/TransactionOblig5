@@ -2,6 +2,11 @@ package com.oblig5.transaction.dto;
 
 import com.oblig5.transaction.model.User;
 
+/***
+ * Made for testing an included for later expansion of code.
+ *
+ * Safe to send to view as password is not included.
+ */
 public class UserDto {
     private Integer id;
 

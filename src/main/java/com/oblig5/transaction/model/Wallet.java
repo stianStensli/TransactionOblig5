@@ -4,6 +4,11 @@ import javax.persistence.*;
 import java.util.Map;
 import java.util.StringJoiner;
 
+/***
+ * Linked whit a user, the wallet object stores a users funds.
+ * Wallet contains a link between a Currency and a Double, this means that stored currency e.g BTC is linked with a value 13.2
+ * Has the transfer method that handles the wallets funds so it can not be set to a negative value.
+ */
 @Entity
 @Table(name = "APP_WALLET")
 public class Wallet {

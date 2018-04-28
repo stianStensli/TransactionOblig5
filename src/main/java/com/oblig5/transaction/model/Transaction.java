@@ -6,8 +6,10 @@ import javax.persistence.*;
 
 
 /**
- * Information about a single transaction request. There need to be atleast two to complete a Transaction from one currency to another.
+ * Information about a single transaction request. There need to be at least two to complete a transaction from one currency to another.
  * The class contains information about the transaction.
+ *
+ * The implementation of this class makes it so that one can easily expand the application for other currencies.
  *
  * currencyFrom: Type of currency that the transaction is selling.
  *
@@ -17,7 +19,6 @@ import javax.persistence.*;
  *
  * offerPrice: Defined as the value per amount that the transaction offers to buy at.
  *
- * e.g: currencyFrom = USD currencyTO = BTC then price is reprecenting the value
  */
 @Entity
 @Table(name = "APP_TRANSACTION")
